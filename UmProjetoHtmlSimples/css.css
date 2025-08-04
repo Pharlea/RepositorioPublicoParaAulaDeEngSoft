@@ -1,0 +1,23 @@
+html,
+body {
+  height: 100%;
+  margin: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: azure;
+  font-family: "Courier New", Courier, monospace;
+  font-size: large;
+  flex-direction: column;
+}
+
+.main_div {
+  background-color: snow;
+  border: 3px black solid;
+  border-radius: 10px;
+  padding: 20px;
+}
+
+.texto-pequeno {
+  font-size: small;
+}
