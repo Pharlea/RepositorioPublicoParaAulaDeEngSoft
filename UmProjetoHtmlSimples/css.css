@@ -5,7 +5,7 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: rgb(159, 204, 119);
+  background-color: rgb(204, 174, 119);
   font-family: "Courier New", Courier, monospace;
   font-size: large;
   flex-direction: column;
