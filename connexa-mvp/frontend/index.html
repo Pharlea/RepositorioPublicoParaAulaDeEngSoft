@@ -1,0 +1,41 @@
+	<!DOCTYPE html>
+	<html lang="pt-BR">
+	<head>
+	  <meta charset="UTF-8">
+	  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	  <title>Connexa MVP</title>
+	  <link rel="stylesheet" href="css/main.css">
+	</head>
+	<body>
+	  <div class="landing-container">
+	    <h1 class="landing-title">Connexa</h1>
+	    <p class="landing-desc">Encontre, crie e gerencie grupos de estudo de forma simples e segura.</p>
+	    <div class="landing-actions">
+	      <a href="grupos.html" class="btn-principal">Acessar Grupos</a>
+	      <a href="#" class="btn-secundario">Login</a>
+	      <a href="#" class="btn-secundario">Cadastro</a>
+	    </div>
+	  </div>
+
+	  <!-- Botão de suporte fixo no rodapé -->
+	  <button id="btn-suporte" class="btn-suporte-fixo" title="Reclame aqui">
+	    <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+	      <path d="M12 2C6.48 2 2 6.48 2 12v5a3 3 0 003 3h2a1 1 0 001-1v-5a1 1 0 00-1-1H5v-1a7 7 0 0114 0v1h-2a1 1 0 00-1 1v5a1 1 0 001 1h2a3 3 0 003-3v-5C22 6.48 17.52 2 12 2z" stroke="#25d366" stroke-width="2"/>
+	      <circle cx="8.5" cy="16.5" r="1.5" fill="#25d366"/>
+	      <circle cx="15.5" cy="16.5" r="1.5" fill="#25d366"/>
+	    </svg>
+	  </button>
+
+	  <!-- Modal de reclamação -->
+	  <div id="modal-suporte">
+	    <div class="modal-content">
+	      <span id="close-modal-suporte">&times;</span>
+	      <label for="input-reclamacao"><b>Reclame aqui</b></label>
+	      <textarea id="input-reclamacao" placeholder="Descreva seu problema ou reclamação..."></textarea>
+	      <button id="enviar-reclamacao">Enviar</button>
+	    </div>
+	  </div>
+
+	  <script src="js/suporte.js"></script>
+	</body>
+	</html>

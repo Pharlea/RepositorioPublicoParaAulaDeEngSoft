@@ -1,0 +1,250 @@
+/* Barra de busca fixa no topo absoluto */
+.barra-busca-fixa {
+  position:fixed;
+  top:0; left:0; right:0;
+  z-index:3000;
+  background:#202c33;
+  border-bottom:2px solid #25d366;
+  box-shadow:0 2px 12px rgba(0,0,0,0.13);
+  padding:0 0 2px 0;
+}
+.barra-busca-form {
+  display:flex;gap:8px;align-items:center;justify-content:center;padding:14px 0 10px 0;
+}
+.barra-busca-msg {
+  text-align:center;margin-top:2px;font-weight:bold;
+}
+
+body { padding-top:70px; }
+
+/* Botão de suporte fixo no rodapé direito */
+.btn-suporte-fixo {
+  position:fixed;
+  right:24px;
+  bottom:24px;
+  z-index:3500;
+  background:#202c33;
+  border:2px solid #25d366;
+  border-radius:50%;
+  width:56px;height:56px;
+  box-shadow:0 2px 12px rgba(0,0,0,0.18);
+  display:flex;align-items:center;justify-content:center;
+  transition:background 0.2s,border 0.2s;
+}
+.btn-suporte-fixo:hover { background:#25d366; border-color:#128c7e; }
+.btn-suporte-fixo svg { width:32px;height:32px; }
+/* Modal de Grupo Profissional - aprimorado */
+.modal-grupo-header { display:flex;flex-direction:column;gap:2px;margin-bottom:8px; }
+.modal-grupo-section { margin-bottom:18px;padding-bottom:10px;border-bottom:1px solid #232d34; }
+.modal-grupo-section:last-child { border-bottom:none; }
+.modal-grupo-membros-label { font-size:15px;color:#25d366;font-weight:bold;margin-bottom:2px;display:flex;align-items:center; }
+.chat-avatar { display:inline-block;width:26px;height:26px;border-radius:50%;font-weight:bold;font-size:15px;text-align:center;line-height:26px;margin-right:7px;vertical-align:middle;box-shadow:0 1px 4px rgba(0,0,0,0.10); }
+.chat-bolha { background:#222d34;border-radius:7px;padding:6px 12px;display:flex;align-items:center;gap:6px;max-width:90%;margin-bottom:2px;word-break:break-word;box-shadow:0 1px 4px rgba(0,0,0,0.08); }
+.chat-bolha-eu { background:#25d366;color:#202c33;align-self:flex-end; }
+.chat-user { font-weight:bold;margin-right:4px; }
+.chat-texto { }
+.modal-grupo-chat-mensagens { scrollbar-width:thin;scrollbar-color:#25d366 #202c33; }
+.modal-grupo-chat-mensagens::-webkit-scrollbar { width:6px; }
+.modal-grupo-chat-mensagens::-webkit-scrollbar-thumb { background:#25d366;border-radius:6px; }
+.modal-grupo-chat-mensagens::-webkit-scrollbar-track { background:#202c33; }
+.modal-grupo-chat-inputs input:focus, .modal-grupo-chat-inputs button:focus { outline:2px solid #25d366; }
+.modal-grupo-chat-inputs input::placeholder { color:#b2dfdb;opacity:1; }
+.modal-grupo-chat-inputs input { transition:box-shadow 0.2s; }
+.modal-grupo-chat-inputs input:focus { box-shadow:0 0 0 2px #25d36633; }
+.btn-principal:active { transform:scale(0.97); }
+/* Modal de Grupo Profissional */
+.modal-grupo-prof {
+  display:none;position:fixed;z-index:2100;left:0;top:0;width:100vw;height:100vh;background:rgba(17,27,33,0.85);align-items:center;justify-content:center;
+}
+.modal-grupo-content {
+  background:#202c33;color:#e9edef;padding:32px 36px;border-radius:18px;box-shadow:0 4px 32px rgba(0,0,0,0.28);min-width:340px;max-width:98vw;position:relative;min-height:420px;max-height:92vh;overflow-y:auto;display:flex;flex-direction:column;gap:8px;
+}
+.modal-grupo-close {
+  position:absolute;top:10px;right:18px;font-size:30px;cursor:pointer;color:#25d366;transition:color 0.2s;
+}
+.modal-grupo-close:hover { color:#128c7e; }
+.modal-grupo-title { margin:0 0 10px 0;font-size:22px;color:#25d366;letter-spacing:0.5px; }
+.modal-grupo-info { margin-bottom:6px;font-size:15px;line-height:1.5; }
+.modal-grupo-membros { margin-bottom:8px;font-size:15px;color:#b2dfdb; }
+.modal-grupo-entrar { margin-bottom:18px; }
+.btn-principal {
+  background:#25d366;color:#202c33;font-size:15px;padding:7px 18px;border-radius:8px;font-weight:bold;border:none;transition:background 0.2s,color 0.2s;cursor:pointer;box-shadow:0 1px 4px rgba(37,211,102,0.08);
+}
+.btn-principal:hover { background:#128c7e;color:#e9edef; }
+.modal-grupo-feedback { margin-top:10px;font-weight:bold;min-height:18px; }
+.modal-grupo-lista { margin-top:18px;display:none; }
+.modal-grupo-chat {
+  margin-top:24px;background:#232d34;border-radius:12px;padding:16px 12px 12px 12px;max-width:520px;box-shadow:0 2px 8px rgba(0,0,0,0.13);
+}
+.modal-grupo-chat-title { font-weight:bold;color:#25d366;margin-bottom:8px;font-size:17px;letter-spacing:0.2px; }
+.modal-grupo-chat-mensagens {
+  height:170px;overflow-y:auto;background:#202c33;border-radius:8px;padding:10px 12px 10px 10px;margin-bottom:10px;font-size:15px;box-shadow:0 1px 4px rgba(0,0,0,0.08);
+  display:flex;flex-direction:column;gap:4px;
+}
+.modal-grupo-chat-inputs { display:flex;gap:8px;align-items:center; }
+.input-pequeno { width:70px;padding:6px 8px;border-radius:6px;border:1px solid #222d34;background:#2a3942;color:#e9edef;font-size:15px; }
+.input-grande { flex:1;padding:6px 10px;border-radius:6px;border:1px solid #222d34;background:#2a3942;color:#e9edef;font-size:15px; }
+.modal-grupo-chat-feedback { margin-top:4px;font-size:13px;font-weight:bold;min-height:16px; }
+.chat-bolha {
+  background:#222d34;border-radius:7px;padding:6px 12px;display:inline-block;max-width:90%;margin-bottom:2px;word-break:break-word;
+}
+.chat-bolha-eu { background:#25d366;color:#202c33;align-self:flex-end; }
+.chat-user { font-weight:bold;margin-right:4px; }
+.chat-texto { }
+@media (max-width: 600px) {
+  .modal-grupo-content { padding:12px 4vw;min-width:0; }
+  .modal-grupo-chat { max-width:98vw;padding:10px 2vw; }
+  .modal-grupo-chat-mensagens { height:110px; }
+}
+/* Card de grupo sugerido */
+.card-grupo {
+  background: #232d34;
+  border-radius: 12px;
+  padding: 18px 20px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.13);
+  border: 1.5px solid #222d34;
+  min-width: 260px;
+  max-width: 320px;
+  cursor: pointer;
+  transition: box-shadow 0.2s, border 0.2s;
+}
+.card-grupo:hover {
+  box-shadow: 0 4px 16px rgba(37,211,102,0.18);
+  border: 1.5px solid #25d366;
+}
+/* Barra de pesquisa de grupos fixa no topo */
+#barra-busca-grupos {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  background: #202c33;
+  border-bottom: 1.5px solid #222d34;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+}
+#barra-busca-grupos input {
+  background: #2a3942;
+  color: #e9edef;
+  border: 1px solid #222d34;
+  border-radius: 6px;
+  padding: 7px 12px;
+  font-size: 15px;
+}
+#barra-busca-grupos button {
+  background: #25d366;
+  color: #202c33;
+  border: none;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+#barra-busca-grupos button:hover {
+  background: #128c7e;
+  color: #e9edef;
+}
+body {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  background: #111b21;
+  color: #e9edef;
+  margin: 0;
+}
+
+/* Containers principais */
+#criar-grupo, #gerenciar-grupo, #buscar-grupos, #sugestoes-grupos {
+  background: #202c33;
+  border-radius: 12px;
+  box-shadow: 0 1px 8px rgba(0,0,0,0.18);
+  color: #e9edef;
+  border: 1px solid #222d34;
+}
+#criar-grupo h2, #gerenciar-grupo h2, #buscar-grupos h2, #sugestoes-grupos h2 {
+  color: #25d366;
+}
+
+input, select, textarea {
+  background: #2a3942;
+  color: #e9edef;
+  border: 1px solid #222d34;
+  border-radius: 6px;
+  padding: 7px 12px;
+  margin-bottom: 4px;
+  font-size: 15px;
+}
+input:focus, select:focus, textarea:focus {
+  outline: 2px solid #25d366;
+  background: #232d34;
+}
+
+button {
+  background: #202c33;
+  color: #25d366;
+  border: 1px solid #25d366;
+  border-radius: 6px;
+  padding: 7px 16px;
+  font-weight: bold;
+  font-size: 15px;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+button:hover {
+  background: #25d366;
+  color: #202c33;
+}
+
+#btn-suporte {
+  background: #202c33;
+  border: 1.5px solid #25d366;
+  color: #25d366;
+}
+#btn-suporte svg {
+  color: #25d366;
+}
+
+#modal-suporte {
+  background: rgba(17,27,33,0.85);
+}
+#modal-suporte .modal-content {
+  background: #202c33;
+  color: #e9edef;
+  border-radius: 12px;
+  box-shadow: 0 2px 16px rgba(0,0,0,0.25);
+}
+#close-modal-suporte {
+  color: #25d366;
+}
+#input-reclamacao {
+  background: #2a3942;
+  color: #e9edef;
+  border: 1px solid #222d34;
+}
+#enviar-reclamacao {
+  background: #25d366;
+  color: #202c33;
+  border: none;
+}
+#enviar-reclamacao:hover {
+  background: #128c7e;
+  color: #e9edef;
+}
+
+.complaint, .complaint-list {
+  background: #232d34;
+  color: #e9edef;
+  border-radius: 8px;
+  border: 1px solid #222d34;
+}
+
+ul, li {
+  color: #e9edef;
+}
+
+::-webkit-scrollbar {
+  width: 8px;
+  background: #232d34;
+}
+::-webkit-scrollbar-thumb {
+  background: #202c33;
+  border-radius: 8px;
+}

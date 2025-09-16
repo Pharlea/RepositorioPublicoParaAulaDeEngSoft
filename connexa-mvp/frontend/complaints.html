@@ -1,0 +1,151 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Reclamações dos Usuários</title>
+  <link rel="stylesheet" href="css.css">
+  <style>
+    body { font-family: Arial, sans-serif; margin: 32px; }
+    h1 { margin-bottom: 24px; }
+    .complaint-list { max-width: 600px; margin: 0 auto; }
+    .complaint { background: #f8f8f8; border-radius: 6px; padding: 16px; margin-bottom: 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.04); }
+    .complaint .date { color: #888; font-size: 13px; margin-bottom: 8px; }
+    .complaint .text { font-size: 16px; }
+  </style>
+</head>
+<body>
+  <h1>Reclamações dos Usuários</h1>
+  <div id="login-admin" style="max-width:340px;margin:32px auto 24px auto;padding:24px 28px;background:#f8f8f8;border-radius:8px;box-shadow:0 1px 8px rgba(0,0,0,0.06);display:none;flex-direction:column;gap:12px;">
+    <h2 style="margin:0 0 8px 0;font-size:20px;">Login Administrador</h2>
+    <input type="text" id="admin-user" placeholder="Usuário" style="padding:6px 10px; border-radius:4px; border:1px solid #ccc;">
+    <input type="password" id="admin-pass" placeholder="Senha" style="padding:6px 10px; border-radius:4px; border:1px solid #ccc;">
+    <button id="btn-login-admin" style="padding:7px 0; border-radius:4px; background:#007bff; color:#fff; border:none; font-weight:bold; cursor:pointer;">Entrar</button>
+    <div id="login-erro" style="color:#b00;font-size:14px;display:none;"></div>
+  </div>
+  <div id="painel-reclamacoes" style="display:none;">
+    <div style="margin-bottom:16px;display:flex;gap:12px;align-items:center;">
+      <input type="text" id="filtro" placeholder="Filtrar por texto..." style="padding:6px 10px; border-radius:4px; border:1px solid #ccc; width:220px;">
+      <button id="exportar-csv" style="padding:6px 14px; border-radius:4px; background:#007bff; color:#fff; border:none; font-weight:bold; cursor:pointer;">Exportar CSV</button>
+      <button id="logout-admin" style="padding:6px 14px; border-radius:4px; background:#eee; color:#333; border:none; font-weight:bold; cursor:pointer;">Sair</button>
+    </div>
+    <div class="complaint-list" id="complaint-list"></div>
+  </div>
+  <div class="complaint-list" id="complaint-list"></div>
+  <div id="aviso-autorizacao" style="display:none;color:#b00;font-weight:bold;margin-top:24px;"></div>
+    let complaintsData = [];
+    function renderComplaints(filtro = '') {
+      const list = document.getElementById('complaint-list');
+      list.innerHTML = '';
+      let dados = complaintsData;
+      if (filtro) {
+        dados = dados.filter(item => item.texto.toLowerCase().includes(filtro.toLowerCase()));
+      }
+      if (dados.length) {
+        dados.forEach(item => {
+          const div = document.createElement('div');
+          div.className = 'complaint';
+          div.innerHTML = `<div class="date">${new Date(item.data).toLocaleString('pt-BR')}</div><div class="text">${item.texto}</div>`;
+          list.appendChild(div);
+        });
+      } else {
+        list.innerHTML = '<p>Nenhuma reclamação registrada.</p>';
+      }
+    }
+
+    function exportarCSV() {
+      if (!complaintsData.length) return alert('Nenhuma reclamação para exportar.');
+      let csv = 'Data,Reclamação\n';
+      complaintsData.forEach(item => {
+        const data = new Date(item.data).toLocaleString('pt-BR').replace(/,/g,'');
+        const texto = '"' + item.texto.replace(/"/g,'""') + '"';
+        csv += `${data},${texto}\n`;
+      });
+      const blob = new Blob([csv], { type: 'text/csv' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'reclamacoes.csv';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    }
+
+    function mostrarPainel() {
+      document.getElementById('login-admin').style.display = 'none';
+      document.getElementById('painel-reclamacoes').style.display = 'block';
+    }
+    function mostrarLogin() {
+      document.getElementById('login-admin').style.display = 'flex';
+      document.getElementById('painel-reclamacoes').style.display = 'none';
+    }
+
+    function logoutAdmin() {
+      localStorage.removeItem('adminToken');
+      mostrarLogin();
+    }
+    document.getElementById('logout-admin').onclick = logoutAdmin;
+
+    document.getElementById('filtro').addEventListener('input', function() {
+      renderComplaints(this.value);
+    });
+    document.getElementById('exportar-csv').onclick = exportarCSV;
+
+    // Login admin (usuário: admin, senha: 1234)
+    document.getElementById('btn-login-admin').onclick = function() {
+      const user = document.getElementById('admin-user').value;
+      const pass = document.getElementById('admin-pass').value;
+      fetch('/api/complaints/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ user, pass })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.token) {
+          localStorage.setItem('adminToken', data.token);
+          document.getElementById('login-erro').style.display = 'none';
+          carregarComplaints();
+        } else {
+          document.getElementById('login-erro').innerText = data.error || 'Login inválido.';
+          document.getElementById('login-erro').style.display = 'block';
+        }
+      })
+      .catch(() => {
+        document.getElementById('login-erro').innerText = 'Erro ao tentar login.';
+        document.getElementById('login-erro').style.display = 'block';
+      });
+    };
+
+    function carregarComplaints() {
+      const token = localStorage.getItem('adminToken');
+      if (!token) {
+        mostrarLogin();
+        return;
+      }
+      fetch('/api/complaints', {
+        headers: { 'Authorization': 'Bearer ' + token }
+      })
+      .then(res => {
+        if (res.status === 401) {
+          mostrarLogin();
+          return [];
+        }
+        mostrarPainel();
+        return res.json();
+      })
+      .then(data => {
+        complaintsData = Array.isArray(data) ? data : [];
+        renderComplaints();
+      })
+      .catch(() => {
+        document.getElementById('complaint-list').innerHTML = '<p>Erro ao carregar reclamações.</p>';
+      });
+    }
+
+    // Inicialização
+    carregarComplaints();
+    }
+  </script>
+</body>
+</html>

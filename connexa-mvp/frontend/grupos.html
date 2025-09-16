@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>Meus Grupos | Connexa</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="css/main.css">
+  
+</head>
+<body>
+  <div class="grupos-container">
+    <div class="grupos-header">
+      <span class="grupos-title">Meus Grupos</span>
+      <a href="index.html" style="color:#25d366;font-weight:bold;text-decoration:none;font-size:15px;">&larr; Voltar</a>
+    </div>
+    <div class="grupos-lista" id="grupos-lista"></div>
+    <div class="grupos-vazio" id="grupos-vazio">Você ainda não participa de nenhum grupo.</div>
+  </div>
+  <!-- Importa o modal de grupo e scripts do index.html para reuso -->
+  <div id="modal-grupo-placeholder"></div>
+  <script>
+    // Carrega o modal de grupo do index.html dinamicamente
+    fetch('index.html')
+      .then(r => r.text())
+      .then(html => {
+        const temp = document.createElement('div');
+        temp.innerHTML = html;
+        // Extrai o modal e scripts necessários
+        const modal = temp.querySelector('#modal-grupo');
+        if (modal) document.getElementById('modal-grupo-placeholder').appendChild(modal);
+        // Copia as funções JS essenciais
+        const scripts = temp.querySelectorAll('script');
+        scripts.forEach(s => {
+          if (s.textContent.includes('function abrirModalGrupo')) {
+            const scriptTag = document.createElement('script');
+            scriptTag.textContent = s.textContent;
+            document.body.appendChild(scriptTag);
+          }
+        });
+      });
+  </script>
+  <script>
+    async function carregarGrupos() {
+      const res = await fetch('/api/groups/search');
+      const data = await res.json();
+      const lista = document.getElementById('grupos-lista');
+      const vazio = document.getElementById('grupos-vazio');
+      if (Array.isArray(data) && data.length) {
+        vazio.style.display = 'none';
+        lista.innerHTML = data.map(g => `
+          <div class="card-grupo" onclick='abrirModalGrupo(${JSON.stringify(g)})'>
+            <div class="card-grupo-nome">${g.nome}</div>
+            <div class="card-grupo-info">
+              <b>Matéria:</b> ${g.materia || '-'}<br>
+              <b>Tópicos:</b> ${g.topicos || '-'}<br>
+              <b>Tipo:</b> ${g.tipo}<br>
+              <b>ID:</b> ${g.id}
+            </div>
+          </div>
+        `).join('');
+      } else {
+        lista.innerHTML = '';
+        vazio.style.display = 'block';
+      }
+    }
+    window.addEventListener('DOMContentLoaded', carregarGrupos);
+    // Função dummy para abrir modal (pode ser substituída por navegação ou modal real)
+    function abrirModalGrupo(grupo) {
+      alert('Abrir detalhes do grupo: ' + grupo.nome + '\nID: ' + grupo.id);
+    }
+  </script>
+</body>
+</html>
